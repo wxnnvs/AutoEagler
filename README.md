@@ -2,7 +2,7 @@
 A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alternative to singleplayer for Eaglercraft
 
 ## Progress:
-- [ ] Write setup.bat
+- [x] Write setup.bat (Messy code, not complete :>)
 - [ ] Write setup.sh 
 
 # For Mojang:
