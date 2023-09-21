@@ -55,7 +55,7 @@ echo Spigot.jar downloaded to %SpigotLocation%
 pause
 
 
-:initialRun
+:initialRun 
 cls
 echo Generating BungeeCord config files
 start /min cmd.exe /C "title bungee && cd Bungee && java -Xms64M -Xmx64M -jar BungeeCord.jar"
