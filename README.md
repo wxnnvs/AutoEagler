@@ -3,7 +3,9 @@ A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alt
 
 ## Progress:
 🟠 Rewrite setup.bat and setup.sh to one cross-platform python script
+
 ⚪ Add ngrok reverse proxy with HTTPS client support
+
 ⚪ Add optional custom domain
 
 # For Mojang:
