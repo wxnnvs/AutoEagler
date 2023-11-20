@@ -114,6 +114,8 @@ def main():
             replace_in_file("Server/server.properties", "online-mode=true", "online-mode=false")
             replace_in_file("Server/spigot.yml", "bungeecord: false", "bungeecord: true")
             replace_in_file("Bungee/plugins/EaglercraftXBungee/authservice.yml", "enable_authentication_system: true", "enable_authentication_system: false")
+            replace_in_file("Bungee/plugins/EaglercraftXBungee/settings.yml", "server_name: 'EaglercraftXBungee Server'", "server_name: 'AutoEagler Server'")
+            replace_in_file("Bungee/plugins/EaglercraftXBungee/listeners.yml", "&6An EaglercraftX server", "&6An AutoEagler server")
 
             replace_in_file("Bungee/config.yml", "online_mode: true", "online_mode: false")
             replace_in_file("Bungee/config.yml", "ip_forward: false", "ip_forward: true")
