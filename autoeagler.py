@@ -90,21 +90,26 @@ def main():
             if not os.path.exists(eaglerx_location):
                 os.makedirs(os.path.dirname(eaglerx_location), exist_ok=True)
                 download_file(latest_eaglerx, eaglerx_location)
-                print(f"eaglerxbungee.jar downloaded to {eaglerx_location}")
+                print(f"Eaglerxbungee.jar downloaded to {eaglerx_location}")
 
             if not os.path.exists(spigot_location):
                 os.makedirs(os.path.dirname(spigot_location), exist_ok=True)
                 download_file(latest_spigot, spigot_location)
                 print(f"Spigot.jar downloaded to {spigot_location}")
+            
+            print("Initial run..")
 
             run_servers()  # Run the servers after downloading
             time.sleep(15)
             stop_servers()
+            print("Enabling EULA in spigot...")
             replace_in_file("Server/eula.txt", "false", "true")  # Example: Change eula to true
+            print("Generating config files...")
             run_servers()
             time.sleep(15)
             stop_servers()
 
+            print("Modifiying config files...")
             # Replace content in configuration files
             replace_in_file("Server/server.properties", "online-mode=true", "online-mode=false")
             replace_in_file("Server/spigot.yml", "bungeecord: false", "bungeecord: true")
@@ -113,8 +118,14 @@ def main():
             replace_in_file("Bungee/config.yml", "online_mode: true", "online_mode: false")
             replace_in_file("Bungee/config.yml", "ip_forward: false", "ip_forward: true")
 
+            clear_screen()
+            print("You're done setting up AutoEagler\nRun the servers by using option 2 and close them using 5")
+            time.sleep(3)
+
         elif choice == '2':
             run_servers()
+            print("Servers starting ...\nJoin on ws://localhost:8081 using an offline download")
+            time.sleep(20)
 
         elif choice == '3':
             pass  # Add plugins logic here
