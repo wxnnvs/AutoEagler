@@ -2,7 +2,7 @@
 A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alternative to singleplayer for Eaglercraft
 
 ## Progress:
-✅ Write autoeagler.py (BROKEN BECAUSE OF NEWEST WATERFALL BUILD)
+✅ Write autoeagler.py (local network only)
 
 ## Usage:
 1. Download autoeagler.py
