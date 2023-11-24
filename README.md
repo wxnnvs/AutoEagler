@@ -8,6 +8,8 @@ A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alt
 
 🟠 Fix Linux support
 
+🟠 Customisation options (gamemode, seed, etc)
+
 ## Usage:
 
 ### Installation
