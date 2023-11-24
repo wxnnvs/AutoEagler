@@ -4,7 +4,9 @@ A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alt
 ## Progress:
 ✅ Write autoeagler.py (local + NGROK)
 
-🟠 Add different regions to decrease ping
+✅ Add different regions to decrease ping
+
+🟠 Fix Linux support
 
 ## Usage:
 
