@@ -45,8 +45,10 @@ def clear_screen():
 def run_command_in_new_terminal(command):
     if os.name == 'nt':
         subprocess.Popen(['start', 'cmd', '/c', command], shell=True)
+    elif os.name == 'posix':
+        subprocess.Popen(['x-terminal-emulator', '-e', 'bash', '-c', command])
     else:
-        subprocess.Popen(['x-terminal-emulator', '-e', command])
+        subprocess.Popen(['bash', '-c', command])
 
 def run_servers():
     
