@@ -2,7 +2,8 @@
 A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alternative to singleplayer for Eaglercraft
 
 ## Progress:
-✅ Write autoeagler.py (local network only)
+✅ Write autoeagler.py (local + NGROK)
+🟠 Add different regions to decrease ping
 
 ## Usage:
 
