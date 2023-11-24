@@ -6,9 +6,9 @@ A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alt
 
 ✅ Add different regions to decrease ping
 
-🟠 Fix Linux support
+✅ Customisation options (gamemode, seed, etc)
 
-🟠 Customisation options (gamemode, seed, etc)
+🟠 Fix Linux support
 
 ## Usage:
 
