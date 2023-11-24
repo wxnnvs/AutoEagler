@@ -108,13 +108,22 @@ def main():
         choice = input(">> ")
 
         if choice == '1':
-            #Ask for preferences
+            clear_screen()
+
+            #Ask for gamemode
             gamemode = str(input("What gamemode would you like to use?\n0 -> Survival\n1 -> Creative\n2 -> Adventure\n3 -> Spectator\n>> "))
             hardcore = "false"
             if gamemode == "0":
                 if input("Do you want to enable hardcore? (Y/N)\n>> ").lower() == "y":
                     hardcore = "true"
+
             clear_screen()
+
+            #Ask for seed
+            seed = str(input("What seed would you like to use?\n(Leave empty for a random seed)\n>> "))
+
+            clear_screen()
+
             if not os.path.exists(bungee_location):
                 os.makedirs(os.path.dirname(bungee_location), exist_ok=True)
                 download_file(latest_bungee, bungee_location)
@@ -156,6 +165,9 @@ def main():
             #Custom settings
             replace_in_file("Server/server.properties", "gamemode=0", "gamemode="+gamemode)
             replace_in_file("Server/server.properties", "hardcore=false", "hardcore="+hardcore)
+
+            if not seed == "":
+                replace_in_file("Server/server.properties", "seed=", "seed="+seed)
 
             clear_screen()
             print("You're done setting up AutoEagler\nRun the servers by using option 2 and close them using 5")
