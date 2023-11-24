@@ -49,6 +49,9 @@ def run_command_in_new_terminal(command):
         subprocess.Popen(['x-terminal-emulator', '-e', command])
 
 def run_servers():
+    
+    clear_screen()
+
     # Change directory to the location of BungeeCord.jar
     os.chdir(os.path.dirname(bungee_location))
     run_command_in_new_terminal(f'java -Xms64M -Xmx64M -jar {os.path.basename(bungee_location)}')
@@ -75,12 +78,22 @@ def stop_servers():
 
     print("Servers stopped.")
 
-def open_tunnel():
+def ngrok_start():
     global http_tunnel
+
+    clear_screen()
+
+    #ask for region to use
+    ligma = input("What region would u like to use for your server? \nap -> Asia/Pacific (Singapore)\nau -> Australia (Sydney)\neu -> Europe (Frankfurt)\nin -> India (Mumbai)\njp -> Japan (Tokyo)\nsa -> South America (São Paulo)\nus -> United States (Ohio)\nus-cal-1 -> United States (California)\n>> ")
+    conf.get_default().region = ligma
+
+    run_servers()
+
+    #open tunnel to NGROK
     conf.get_default().monitor_thread = False
     with redirect_stdout(None) and redirect_stderr(None):
-        http_tunnel = ngrok.connect(8081, 'http', bind_tls=True, )
-    print("Server running at ", http_tunnel.public_url.replace("https", "wss"))
+        http_tunnel = ngrok.connect(8081, 'http', bind_tls=True)
+    print(f"Server running in {ligma} at {http_tunnel.public_url.replace('https', 'wss')}")
 
 def main():
     while True:
@@ -142,8 +155,7 @@ def main():
             input("Press [Enter] to return to the menu (servers stay up)")
 
         elif choice == '3':
-            run_servers()
-            open_tunnel()
+            ngrok_start()
             input("Press [Enter] to return to the menu (servers stay up)")
 
         elif choice == '4':
