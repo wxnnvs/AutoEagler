@@ -108,6 +108,13 @@ def main():
         choice = input(">> ")
 
         if choice == '1':
+            #Ask for preferences
+            gamemode = str(input("What gamemode would you like to use?\n0 -> Survival\n1 -> Creative\n2 -> Adventure\n3 -> Spectator\n>> "))
+            hardcore = "false"
+            if gamemode == "0":
+                if input("Do you want to enable hardcore? (Y/N)\n>> ").lower() == "y":
+                    hardcore = "true"
+            clear_screen()
             if not os.path.exists(bungee_location):
                 os.makedirs(os.path.dirname(bungee_location), exist_ok=True)
                 download_file(latest_bungee, bungee_location)
@@ -129,7 +136,7 @@ def main():
             time.sleep(15)
             stop_servers()
             print("Enabling EULA in spigot...")
-            replace_in_file("Server/eula.txt", "false", "true")  # Example: Change eula to true
+            replace_in_file("Server/eula.txt", "false", "true")  # Change eula to true
             print("Generating config files...")
             run_servers()
             time.sleep(15)
@@ -145,6 +152,10 @@ def main():
 
             replace_in_file("Bungee/config.yml", "online_mode: true", "online_mode: false")
             replace_in_file("Bungee/config.yml", "ip_forward: false", "ip_forward: true")
+
+            #Custom settings
+            replace_in_file("Server/server.properties", "gamemode=0", "gamemode="+gamemode)
+            replace_in_file("Server/server.properties", "hardcore=false", "hardcore="+hardcore)
 
             clear_screen()
             print("You're done setting up AutoEagler\nRun the servers by using option 2 and close them using 5")
