@@ -16,7 +16,7 @@ A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alt
 
 1. Download and install the latest [Python](https://python.org) release
 3. Install [Java 8](https://java.com/download/)
-4. Download [the latest release](github.com/wxnnvs/AutoEagler/releases/latest) to a dedicated folder
+4. Download [the latest release](https://github.com/wxnnvs/AutoEagler/releases/latest) to a dedicated folder
 4. Unzip the zip file
 5. Run `start.bat` in CMD
 6. Open up option `1`
