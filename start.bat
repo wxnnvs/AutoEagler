@@ -1,11 +1,11 @@
 @echo off
-title Server Main
+title AutoEagler | Checking software ...
 
-echo Running script...
+python3 -m pip install -r requirements.txt
 
-python -m pip install -r requirements.txt
+title AutoEagler | Running ...
 
-python autoeagler.py
+python3 autoeagler.py
 
 echo Script exited.
 
