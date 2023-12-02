@@ -3,7 +3,7 @@ title "Checking software ..."
 
 where python3 >nul 2>nul
 if %errorlevel%==1 (
-    @echo Python not found, please install the latest release from https://python.org.
+    @echo Python not found, please install Python 3 from https://python.org.
     pause
     exit 0
 )
