@@ -3,14 +3,14 @@ import requests
 import shutil
 import time
 import subprocess
-import psutil
 import os
 
 from contextlib import redirect_stdout, redirect_stderr
 from pyngrok import conf, ngrok
+import pygetwindow as gw
 
 # URLs and file locations
-latest_bungee = "https://api.papermc.io/v2/projects/waterfall/versions/1.20/builds/540/downloads/waterfall-1.20-540.jar"
+latest_bungee = "https://api.papermc.io/v2/projects/waterfall/versions/1.20/builds/556/downloads/waterfall-1.20-556.jar"
 bungee_location = "Bungee/BungeeCord.jar"
 latest_eaglerx = "https://github.com/lax1dude/eagl3rxbungee-memory-leak-patch/raw/main/EaglerXBungee-Memleak-Fixed.jar"
 eaglerx_location = "./Bungee/plugins/eaglerXbungee.jar"
@@ -55,12 +55,12 @@ def run_servers():
 
     # Change directory to the location of BungeeCord.jar
     os.chdir(os.path.dirname(bungee_location))
-    run_command_in_new_terminal(f'java -Xms64M -Xmx64M -jar {os.path.basename(bungee_location)}')
+    run_command_in_new_terminal(f'title bungee & java -Xms64M -Xmx64M -jar {os.path.basename(bungee_location)}')
     os.chdir(os.path.dirname("../"))
 
     # Change directory to the location of Spigot.jar
     os.chdir(os.path.dirname(spigot_location))
-    run_command_in_new_terminal(f'java -Xms2G -Xmx2G -jar {os.path.basename(spigot_location)}')
+    run_command_in_new_terminal(f'title spigot & java -Xms2G -Xmx2G -jar {os.path.basename(spigot_location)}')
     os.chdir(os.path.dirname("../"))
 
     print("Servers starting ...")
@@ -68,16 +68,15 @@ def run_servers():
 def stop_servers():
     print("Stopping servers...")
     
-    for process in psutil.process_iter(['pid', 'name', 'cmdline']):
-        try:
-            cmdline = process.info.get('cmdline')
-            if cmdline and 'java' in cmdline and any(jar_name in cmdline for jar_name in ['BungeeCord.jar', 'Spigot.jar']):
-                print(f"Terminating process {process.info['pid']} ({' '.join(cmdline)})")
-                process.terminate()
-        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-            pass
+    for window in gw.getAllTitles():
+        if 'bungee' in window.lower() or 'spigot' in window.lower():
+            try:
+                gw.getWindowsWithTitle(window)[0].close()
+                print(f"Closed {window}")
+            except Exception as e:
+                print(f"Failed to close {window}. Error: {e}")
 
-    print("Servers stopped.")
+    print("servers stopped")
 
 def ngrok_start():
     global http_tunnel
