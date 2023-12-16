@@ -12,7 +12,7 @@ import pygetwindow as gw
 # URLs and file locations
 latest_bungee = "https://api.papermc.io/v2/projects/waterfall/versions/1.20/builds/556/downloads/waterfall-1.20-556.jar"
 bungee_location = "Bungee/BungeeCord.jar"
-latest_eaglerx = "https://github.com/lax1dude/eagl3rxbungee-memory-leak-patch/raw/main/EaglerXBungee-Memleak-Fixed.jar"
+latest_eaglerx = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/EaglercraftX_1.8_Ultimate_u19/EaglerXBungee-Latest.jar"
 eaglerx_location = "./Bungee/plugins/eaglerXbungee.jar"
 latest_spigot = "https://cdn.getbukkit.org/spigot/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar"
 spigot_location = "Server/Spigot.jar"
