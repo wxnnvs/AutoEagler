@@ -9,7 +9,11 @@ from datetime import datetime
 
 from contextlib import redirect_stdout, redirect_stderr
 from pyngrok import conf, ngrok
-import pygetwindow as gw
+import psutil
+import platform
+if platform.system() == 'Windows':
+    import pygetwindow as gw
+
 
 #create log files
 log_dir = "./logs"
@@ -47,6 +51,14 @@ file3 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branc
 file3_location = "Bungee-1.5.2/server-icon.png"
 latest_spigot_1_5_2 = "https://cdn.getbukkit.org/spigot/spigot-1.5.2-R1.1-SNAPSHOT.jar"
 spigot_location_1_5_2 = "server-1.5.2/Spigot.jar"
+def close_terminal_window(window_name):
+    for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+        if window_name in proc.info['cmdline']:
+            try:
+                proc.terminate()
+                print(f"Window '{window_name}' terminated successfully.")
+            except psutil.NoSuchProcess:
+                print(f"Failed to terminate window '{window_name}'. Process not found.")
 def download_file(url, location):
     logging.info(f"downloaded a file from {url} to {location}")
     response = requests.get(url)
@@ -79,8 +91,13 @@ def clear_screen():
 def run_command_in_new_terminal(command):
     if os.name == 'nt':
         subprocess.Popen(['start', 'cmd', '/c', command], shell=True)
+    elif os.name == 'posix':
+        try:
+            subprocess.Popen(['xdg-open', 'x-terminal-emulator', '--', 'bash', '-c', command])
+        except FileNotFoundError:
+            print("No suitable terminal emulator found. Please run the command manually.")
     else:
-        subprocess.Popen(['x-terminal-emulator', '-e', 'bash', '-c', command])
+        print("Unsupported operating system for running commands in a new terminal.")
 
 
 def run_servers(server_version):
@@ -115,13 +132,19 @@ def run_servers(server_version):
 def stop_servers():
     print("Stopping servers...")
     logging.info("stopping servers...")
-    for window in gw.getAllTitles():
-        if 'bungee' in window.lower() or 'spigot' in window.lower():
-            try:
-                gw.getWindowsWithTitle(window)[0].close()
-                print(f"Closed {window}")
-            except Exception as e:
-                print(f"Failed to close {window}. Error: {e}")
+
+    
+    if platform.system() == 'Windows':
+        for window in gw.getAllTitles():
+            if 'bungee' in window.lower() or 'spigot' in window.lower():
+                try:
+                    gw.getWindowsWithTitle(window)[0].close()
+                    print(f"Closed {window}")
+                except Exception as e:
+                    print(f"Failed to close {window}. Error: {e}")
+    elif platform.system() == 'Linux':
+        close_terminal_window('bungee')
+        close_terminal_window('spigot')
     logging.info("servers stopped")
     print("servers stopped")
 
