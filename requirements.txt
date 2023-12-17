@@ -6,6 +6,8 @@ idna==3.6
     # via requests
 pygetwindow==0.0.9
     # via -r requirements.in
+psutil
+    # via -r requirements.in
 pyngrok==7.0.3
     # via -r requirements.in
 pyrect==0.2.0
