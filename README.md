@@ -2,13 +2,15 @@
 A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alternative to singleplayer for Eaglercraft
 
 ## Progress:
-✅ Write autoeagler.py (local + NGROK)
+✅ Local + NGROK tunneling
 
-✅ Add different regions to decrease ping
+✅ NGROK customisation
 
-✅ Customisation options (gamemode, seed, etc)
+✅ Server customisation (gamemode, seed, etc)
 
-🟠 Fix Linux support
+✅ Multiple versions (1.5.2 + 1.8.8)
+
+🟠 Linux support
 
 ## Usage:
 
