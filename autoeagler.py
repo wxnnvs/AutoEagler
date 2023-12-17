@@ -161,11 +161,7 @@ def main():
             clear_screen()
             #Ask for version
             version = str(input("What version of eaglercraft would you like to make your server for?\n0 -> 1.8.8(u19)\n1 -> 1.5.2\n>> "))
-            if version == 0 :
-                logging.info("user chose 1.8.8")
-
-            if version == 1 :
-                logging.info("user chose 1.5.2")
+            logging.info(f"User chose {version}")
 
             clear_screen()
 
@@ -244,16 +240,14 @@ def main():
                 print("Enabling EULA in spigot...")
                 logging.info("Enabling EULA in spigot...")
                 replace_in_file("Server-1.8.8/eula.txt", "false", "true")  # Change eula to true
+                run_servers(version)
+                time.sleep(15)
+                stop_servers()
                 
             print("Generating config files...")
             logging.info("Generating config files...")
-            run_servers(version)
-            time.sleep(15)
-            stop_servers()
-
-            print("Modifiying 1.8.8 config files...")
-            logging.info("Modifiying config files...")
             if version == "0" : 
+                print("Modifiying 1.8.8 config files...")
                 # Replace content in configuration files
                 replace_in_file("Server-1.8.8/server.properties", "online-mode=true", "online-mode=false")
                 replace_in_file("Server-1.8.8/spigot.yml", "bungeecord: false", "bungeecord: true")
@@ -270,16 +264,19 @@ def main():
 
                 if not seed == "":
                     replace_in_file("Server-1.8.8/server.properties", "seed=", "seed="+seed)
-            logging.info("Modifiying 1.5.2 config files...")
             if version == "1" :
+                logging.info("Modifiying 1.5.2 config files...")
                 # Replace content in configuration files
                 replace_in_file("Server-1.5.2/server.properties", "online-mode=true", "online-mode=false")
                 replace_in_file("Server-1.5.2/spigot.yml", "bungeecord: false", "bungeecord: true")
                 replace_in_file("Bungee-1.5.2/config.yml", "server_name: EaglercraftBungee Server", "server_name: AutoEagler Server")
                 replace_in_file("Bungee-1.5.2/config.yml", "&6An Eaglercraft server", "&6An AutoEagler server")
                 replace_in_file("Bungee-1.5.2/config.yml", "forward_ip: false", "forward_ip: true")
+                replace_in_file("Bungee-1.5.2/config.yml", "host: 0.0.0.0:25565", "host: 0.0.0.0:8081")
+                replace_in_file("Bungee-1.5.2/config.yml", "address: localhost:25569", "address: localhost:25565")
 
                 #Custom settings
+                replace_in_file("Server-1.5.2/server.properties", "gamemode=0", "gamemode="+gamemode)
                 replace_in_file("Server-1.5.2/server.properties", "hardcore=false", "hardcore="+hardcore)
 
                 if not seed == "":
@@ -292,12 +289,14 @@ def main():
 
         elif choice == '2':
             logging.info('user chose "2) Run locally"')
+            version = str(input("What version of eaglercraft would you like to run?\nNOTE: you can only run the versions you set up!\n0 -> 1.8.8(u19)\n1 -> 1.5.2\n>> "))
             run_servers(version)
             print("Server running at ws://localhost:8081")
             input("Press [Enter] to return to the menu (servers stay up)")
 
         elif choice == '3':
-            logging.info('user chose "13) Run with NGROK"')
+            logging.info('user chose "3) Run with NGROK"')
+            version = str(input("What version of eaglercraft would you like to run?\nNOTE: you can only run the versions you set up!\n0 -> 1.8.8(u19)\n1 -> 1.5.2\n>> "))
             ngrok_start(version)
             input("Press [Enter] to return to the menu (servers stay up)")
 
