@@ -1,12 +1,10 @@
 import os
-from venv import logger
 import requests
 import shutil
 import time
 import subprocess
 import os
 import logging
-import sys
 from datetime import datetime
 
 from contextlib import redirect_stdout, redirect_stderr
