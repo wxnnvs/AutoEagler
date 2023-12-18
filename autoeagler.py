@@ -1,4 +1,5 @@
 import os
+from wsgiref.simple_server import server_version
 import requests
 import shutil
 import time
@@ -9,7 +10,11 @@ from datetime import datetime
 
 from contextlib import redirect_stdout, redirect_stderr
 from pyngrok import conf, ngrok
-import pygetwindow as gw
+import psutil
+import platform
+if platform.system() == 'Windows':
+    import pygetwindow as gw
+
 
 #create log files
 log_dir = "./logs"
@@ -39,14 +44,29 @@ spigot_location_1_8_8 = "Server-1.8.8/Spigot.jar"
 latest_eaglerbungee_1_5_2 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_1.5.2_Service_Pack_1.01/bungee_command/bungee-dist.jar"
 eaglerbungee_location_1_5_2 = "Bungee-1.5.2/BungeeCord.jar"
 # these files are required for eaglerbungee 1.5.2 to function(specially config.yml)
-file1 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_1.5.2_Service_Pack_1.01/bungee_command/bans.txt"
-file1_location = "Bungee-1.5.2/bans.txt"
-file2 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_1.5.2_Service_Pack_1.01/bungee_command/config.yml"
-file2_location = "Bungee-1.5.2/config.yml"
-file3 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_1.5.2_Service_Pack_1.01/bungee_command/server-icon.png"
-file3_location = "Bungee-1.5.2/server-icon.png"
+file1_1_5_2 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_1.5.2_Service_Pack_1.01/bungee_command/bans.txt"
+file1_location_1_5_2 = "Bungee-1.5.2/bans.txt"
+file2_1_5_2 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_1.5.2_Service_Pack_1.01/bungee_command/config.yml"
+file2_location_1_5_2 = "Bungee-1.5.2/config.yml"
+file3_1_5_2 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_1.5.2_Service_Pack_1.01/bungee_command/server-icon.png"
+file3_location_1_5_2 = "Bungee-1.5.2/server-icon.png"
 latest_spigot_1_5_2 = "https://cdn.getbukkit.org/spigot/spigot-1.5.2-R1.1-SNAPSHOT.jar"
 spigot_location_1_5_2 = "server-1.5.2/Spigot.jar"
+latest_bukkit_1_3 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_Beta_1.3_Bukkit/eaglercraft-bukkit.jar"
+bukkit_location_1_3 = "server-beta-1.3/eaglercraft-bukkit.jar"
+file1_1_3 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_Beta_1.3_Bukkit/eagler.yml"
+file1_location_1_3 = "server-beta-1.3/eagler.yml"
+file2_1_3 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_Beta_1.3_Bukkit/server.properties"
+file2_location_1_3 = "server-beta-1.3/server.properties"
+
+def close_terminal_window(window_name):
+    for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+        if window_name in proc.info['cmdline']:
+            try:
+                proc.terminate()
+                print(f"Window '{window_name}' terminated successfully.")
+            except psutil.NoSuchProcess:
+                print(f"Failed to terminate window '{window_name}'. Process not found.")
 def download_file(url, location):
     logging.info(f"downloaded a file from {url} to {location}")
     response = requests.get(url)
@@ -66,6 +86,7 @@ def remove_everything():
     shutil.rmtree("./Server-1.8.8", ignore_errors=True)
     shutil.rmtree("./Bungee-1.5.2", ignore_errors=True)
     shutil.rmtree("./Server-1.5.2", ignore_errors=True)
+    shutil.rmtree("./Server-beta-1.3", ignore_errors=True)
     if os.path.exists(bungee_location_1_8_8):
         os.remove(bungee_location_1_8_8)
     if os.path.exists(eaglerx_location_1_8_8):
@@ -79,8 +100,13 @@ def clear_screen():
 def run_command_in_new_terminal(command):
     if os.name == 'nt':
         subprocess.Popen(['start', 'cmd', '/c', command], shell=True)
+    elif os.name == 'posix':
+        try:
+            subprocess.Popen(['xdg-open', 'x-terminal-emulator', '--', 'bash', '-c', command])
+        except FileNotFoundError:
+            print("No suitable terminal emulator found. Please run the command manually.")
     else:
-        subprocess.Popen(['x-terminal-emulator', '-e', 'bash', '-c', command])
+        print("Unsupported operating system for running commands in a new terminal.")
 
 
 def run_servers(server_version):
@@ -109,19 +135,32 @@ def run_servers(server_version):
         os.chdir(os.path.dirname(spigot_location_1_5_2))
         run_command_in_new_terminal(f'title spigot 1.5.2 & java -Xms2G -Xmx2G -jar {os.path.basename(spigot_location_1_5_2)}')
         os.chdir(os.path.dirname("../"))
+    if server_version == "2" :
+        # Change directory to the location of bukkit.jar
+        os.chdir(os.path.dirname(bukkit_location_1_3))
+        run_command_in_new_terminal(f'title eaglerbukkit beta 1.3 & java -Xms2G -Xmx2G -jar {os.path.basename(bukkit_location_1_3)}')
+        os.chdir(os.path.dirname("../"))
 
     print("Servers starting ...")
 
 def stop_servers():
     print("Stopping servers...")
     logging.info("stopping servers...")
-    for window in gw.getAllTitles():
-        if 'bungee' in window.lower() or 'spigot' in window.lower():
-            try:
-                gw.getWindowsWithTitle(window)[0].close()
-                print(f"Closed {window}")
-            except Exception as e:
-                print(f"Failed to close {window}. Error: {e}")
+
+    
+    if platform.system() == 'Windows':
+        for window in gw.getAllTitles():
+            if 'bungee' in window.lower() or 'spigot' in window.lower() or 'eaglerbukkit' in window.lower():
+                try:
+                    gw.getWindowsWithTitle(window)[0].close()
+                    print(f"Closed {window}")
+                except Exception as e:
+                    print(f"Failed to close {window}. Error: {e}")
+    elif platform.system() == 'Linux':
+        close_terminal_window('bungee')
+        close_terminal_window('spigot')
+        if server_version == "2":
+            close_terminal_window('eaglerbukkit')
     logging.info("servers stopped")
     print("servers stopped")
 
@@ -158,32 +197,34 @@ def main():
             logging.info('user chose "1) Set up AutoEagler"')
             clear_screen()
             #Ask for version
-            version = str(input("What version of eaglercraft would you like to make your server for?\n0 -> 1.8.8(u19)\n1 -> 1.5.2\n>> "))
+            version = str(input("What version of eaglercraft would you like to make your server for?\n0 -> 1.8.8(u19)\n1 -> 1.5.2\n2 -> beta 1.3\n>> "))
             logging.info(f"User chose {version}")
 
             clear_screen()
 
             #Ask for gamemode
-            gamemode = str(input("What gamemode would you like to use?\n0 -> Survival\n1 -> Creative\n2 -> Adventure\n3 -> Spectator\n>> "))
-            hardcore = "false"
-            if gamemode == "0":
-                logging.info("user chose survival mode")
-                if input("Do you want to enable hardcore? (Y/N)\n>> ").lower() == "y":
-                    hardcore = "true"
-                    logging.info("user chose hardcore mode after choosing survival")
-            if gamemode == "1":
-                logging.info("user chose creative mode")
-            
-            if gamemode == "2":
-                logging.info("user chose adventure mode")
+            if not version == "2": # bc you cant change your gamemode on beta 1.3 :skull:
+                gamemode = str(input("What gamemode would you like to use?\n0 -> Survival\n1 -> Creative\n2 -> Adventure\n3 -> Spectator\n>> "))
+                hardcore = "false"
+                if gamemode == "0":
+                    logging.info("user chose survival mode")
+                    if input("Do you want to enable hardcore? (Y/N)\n>> ").lower() == "y":
+                        hardcore = "true"
+                        logging.info("user chose hardcore mode after choosing survival")
+                if gamemode == "1":
+                    logging.info("user chose creative mode")
+                
+                if gamemode == "2":
+                    logging.info("user chose adventure mode")
 
-            if gamemode == "3":
-                logging.info("user chose spectator mode")
+                if gamemode == "3":
+                    logging.info("user chose spectator mode")
 
             clear_screen()
 
             #Ask for seed
-            seed = str(input("What seed would you like to use?\n(Leave empty for a random seed)\n>> "))
+            if not version == "2" : # bc you cant change the seed on beta 1.3 :skull:
+                seed = str(input("What seed would you like to use?\n(Leave empty for a random seed)\n>> "))
 
             clear_screen()
             if version == "0":
@@ -207,25 +248,40 @@ def main():
                     download_file(latest_eaglerbungee_1_5_2, eaglerbungee_location_1_5_2)
                     print(f"BungeeCord.jar downloaded to {eaglerbungee_location_1_5_2}")
 
-                if not os.path.exists(file1_location):
-                    os.makedirs(os.path.dirname(file1_location), exist_ok=True)
-                    download_file(file1, file1_location)
-                    print(f"bans.txt downloaded to {file1_location}")
+                if not os.path.exists(file1_location_1_5_2):
+                    os.makedirs(os.path.dirname(file1_location_1_5_2), exist_ok=True)
+                    download_file(file1_1_5_2, file1_location_1_5_2)
+                    print(f"bans.txt downloaded to {file1_location_1_5_2}")
                     
-                if not os.path.exists(file2_location):
-                    os.makedirs(os.path.dirname(file2_location), exist_ok=True)
-                    download_file(file2, file2_location)
-                    print(f"config.yml downloaded to {file2_location}")
+                if not os.path.exists(file2_location_1_5_2):
+                    os.makedirs(os.path.dirname(file2_location_1_5_2), exist_ok=True)
+                    download_file(file2_1_5_2, file2_location_1_5_2)
+                    print(f"config.yml downloaded to {file2_location_1_5_2}")
                                         
-                if not os.path.exists(file3_location):
-                    os.makedirs(os.path.dirname(file3_location), exist_ok=True)
-                    download_file(file3, file3_location)
-                    print(f"server-icon.png downloaded to {file3_location}")
+                if not os.path.exists(file3_location_1_5_2):
+                    os.makedirs(os.path.dirname(file3_location_1_5_2), exist_ok=True)
+                    download_file(file3_1_5_2, file3_location_1_5_2)
+                    print(f"server-icon.png downloaded to {file3_location_1_5_2}")
 
                 if not os.path.exists(spigot_location_1_5_2):
                     os.makedirs(os.path.dirname(spigot_location_1_5_2), exist_ok=True)
                     download_file(latest_spigot_1_5_2, spigot_location_1_5_2)
                     print(f"Spigot.jar downloaded to {spigot_location_1_5_2}")
+            if version == "2":
+                if not os.path.exists(bukkit_location_1_3):
+                    os.makedirs(os.path.dirname(bukkit_location_1_3), exist_ok=True)
+                    download_file(latest_bukkit_1_3, bukkit_location_1_3)
+                    print(f"bukkit.jar downloaded to {bukkit_location_1_3}")
+
+                if not os.path.exists(file1_location_1_3):
+                    os.makedirs(os.path.dirname(file1_location_1_3), exist_ok=True)
+                    download_file(file1_1_3, file1_location_1_3)
+                    print(f"eagler.yml downloaded to {file1_location_1_3}")
+                    
+                if not os.path.exists(file2_location_1_3):
+                    os.makedirs(os.path.dirname(file2_location_1_3), exist_ok=True)
+                    download_file(file2_1_3, file2_location_1_3)
+                    print(f"server.properties downloaded to {file2_location_1_3}")
             
             print("Initial run..")
 
@@ -279,6 +335,14 @@ def main():
 
                 if not seed == "":
                     replace_in_file("Server-1.5.2/server.properties", "seed=", "seed="+seed)
+            if version == "2" :
+                logging.info("Modifiying beta 1.3 config files...")
+                # Replace content in configuration files
+                replace_in_file("Server-beta-1.3/eagler.yml", "only_allow_registered_users_to_login: true", "only_allow_registered_users_to_login: false")
+                replace_in_file("Server-beta-1.3/eagler.yml", "allow_self_registration: false", "allow_self_registration: true")
+                replace_in_file("Server-beta-1.3/eagler.yml", "allow_self_registration_without_expiration: false", "allow_self_registration_without_expiration: true")
+                replace_in_file("Server-beta-1.3/server.properties", "max-players=20", "max-players=69420")
+                replace_in_file("Server-beta-1.3/server.properties", "websocket-address=0.0.0.0\:25565", "websocket-address=0.0.0.0\:8081")
 
             clear_screen()
             print("You're done setting up AutoEagler\nRun the servers by using option 2 and close them using 5")
@@ -287,16 +351,25 @@ def main():
 
         elif choice == '2':
             logging.info('user chose "2) Run locally"')
-            version = str(input("What version of eaglercraft would you like to run?\nNOTE: you can only run the versions you set up!\n0 -> 1.8.8(u19)\n1 -> 1.5.2\n>> "))
+            version = str(input("What version of eaglercraft would you like to run?\nNOTE: you can only run the versions you set up!\n0 -> 1.8.8(u19)\n1 -> 1.5.2\n2 -> beta 1.3\n>> "))
             run_servers(version)
-            print("Server running at ws://localhost:8081")
-            input("Press [Enter] to return to the menu (servers stay up)")
+            if not version == "2":
+                print("Server running at ws://localhost:8081")
+                input("Press [Enter] to return to the menu (servers stay up)")
+            else :
+                print("Server running at 127.0.0.1:8081\nUse /register-password <password> when you join the server to set your password!")
+                input("Press [Enter] to return to the menu (servers stay up)") 
 
         elif choice == '3':
             logging.info('user chose "3) Run with NGROK"')
-            version = str(input("What version of eaglercraft would you like to run?\nNOTE: you can only run the versions you set up!\n0 -> 1.8.8(u19)\n1 -> 1.5.2\n>> "))
+            version = str(input("What version of eaglercraft would you like to run?\nNOTE: you can only run the versions you set up!\n0 -> 1.8.8(u19)\n1 -> 1.5.2\n2 -> beta 1.3\n>> "))
             ngrok_start(version)
-            input("Press [Enter] to return to the menu (servers stay up)")
+            if not version == "2":
+                input("Press [Enter] to return to the menu (servers stay up)")
+            else:
+                print("Use /register-password <password> when you join the server to set your password!")
+                input("Press [Enter] to return to the menu (servers stay up)") 
+
 
         elif choice == '4':
             logging.info('user chose "4) Wipe everything"')
