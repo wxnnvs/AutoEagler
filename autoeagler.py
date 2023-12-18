@@ -81,19 +81,24 @@ def replace_in_file(file_path, search, replace):
         file.write(file_data)
 
 def remove_everything():
-    shutil.rmtree("./Bungee-1.8.8", ignore_errors=True)
-    shutil.rmtree("./Server-1.8.8", ignore_errors=True)
-    shutil.rmtree("./Bungee-1.5.2", ignore_errors=True)
-    shutil.rmtree("./Server-1.5.2", ignore_errors=True)
-    shutil.rmtree("./Server-beta-1.3", ignore_errors=True)
-    if os.path.exists(bungee_location_1_8_8):
-        os.remove(bungee_location_1_8_8)
-    if os.path.exists(eaglerx_location_1_8_8):
-        os.remove(eaglerx_location_1_8_8)
-    if os.path.exists(spigot_location_1_8_8):
-        os.remove(spigot_location_1_8_8)
-    print("All server files have been deleted!")
-    logging.info("removed everything D:")
+    clear_screen()
+    sure = input("All progress made in-game will be lost\nAre you sure you want to remove all files? (Y/N)\n>> ")
+    if sure.lower() == "y":
+        shutil.rmtree("./Bungee-1.8.8", ignore_errors=True)
+        shutil.rmtree("./Server-1.8.8", ignore_errors=True)
+        shutil.rmtree("./Bungee-1.5.2", ignore_errors=True)
+        shutil.rmtree("./Server-1.5.2", ignore_errors=True)
+        shutil.rmtree("./Server-beta-1.3", ignore_errors=True)
+        if os.path.exists(bungee_location_1_8_8):
+            os.remove(bungee_location_1_8_8)
+        if os.path.exists(eaglerx_location_1_8_8):
+            os.remove(eaglerx_location_1_8_8)
+        if os.path.exists(spigot_location_1_8_8):
+            os.remove(spigot_location_1_8_8)
+        print("All server files have been deleted!")
+        logging.info("removed everything D:")
+    else:
+        pass
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
