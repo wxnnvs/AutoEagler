@@ -356,6 +356,7 @@ def main():
             time.sleep(3)
 
         elif choice == '2':
+            clear_screen()
             logging.info('user chose "2) Run locally"')
             version = str(input("What version of eaglercraft would you like to run?\nNOTE: you can only run the versions you set up!\n0 -> 1.8.8(u19)\n1 -> 1.5.2\n2 -> beta 1.3\n>> "))
             run_servers(version)
