@@ -81,7 +81,6 @@ def replace_in_file(file_path, search, replace):
         file.write(file_data)
 
 def remove_everything():
-    logging.info("removed everything D:")
     shutil.rmtree("./Bungee-1.8.8", ignore_errors=True)
     shutil.rmtree("./Server-1.8.8", ignore_errors=True)
     shutil.rmtree("./Bungee-1.5.2", ignore_errors=True)
@@ -93,6 +92,8 @@ def remove_everything():
         os.remove(eaglerx_location_1_8_8)
     if os.path.exists(spigot_location_1_8_8):
         os.remove(spigot_location_1_8_8)
+    print("All server files have been deleted!")
+    logging.info("removed everything D:")
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
