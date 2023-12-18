@@ -4,9 +4,9 @@ charset-normalizer==3.3.2
     # via requests
 idna==3.6
     # via requests
-pygetwindow==0.0.9
+psutil==5.9.6
     # via -r requirements.in
-psutil
+pygetwindow==0.0.9
     # via -r requirements.in
 pyngrok==7.0.3
     # via -r requirements.in
