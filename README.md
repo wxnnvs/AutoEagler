@@ -8,7 +8,7 @@ A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alt
 
 ✅ Server customisation (gamemode, seed, etc)
 
-✅ Multiple versions (1.5.2 + 1.8.8)
+✅ Multiple versions (1.3_beta + 1.5.2 + 1.8.8)
 
 🟠 Linux support
 
