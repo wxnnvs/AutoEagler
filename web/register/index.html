@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script>
+    var TxtRotate = function (el, toRotate, period) {
+      this.toRotate = toRotate;
+      this.el = el;
+      this.loopNum = 0;
+      this.period = parseInt(period, 10) || 2000;
+      this.txt = '';
+      this.tick();
+      this.isDeleting = false;
+    };
+
+    TxtRotate.prototype.tick = function () {
+      var i = this.loopNum % this.toRotate.length;
+      var fullTxt = this.toRotate[i];
+
+      if (this.isDeleting) {
+        this.txt = fullTxt.substring(0, this.txt.length - 1);
+      } else {
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+      }
+
+      this.el.innerHTML = '<span class="wrap">' + this.txt + '</span>';
+
+      var that = this;
+      var delta = 100 - Math.random() * 100;
+
+      if (this.isDeleting) {
+        delta /= 2;
+      }
+
+      if (!this.isDeleting && this.txt === fullTxt) {
+        delta = this.period;
+        this.isDeleting = true;
+      } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        delta = 500;
+      }
+
+      setTimeout(function () {
+        that.tick();
+      }, delta);
+    };
+
+    window.onload = function () {
+      var elements = document.getElementsByClassName('txt-rotate');
+      for (var i = 0; i < elements.length; i++) {
+        var toRotate = elements[i].getAttribute('data-rotate');
+        var period = elements[i].getAttribute('data-period');
+        if (toRotate) {
+          new TxtRotate(elements[i], JSON.parse(toRotate), period);
+        }
+      }
+      // INJECT CSS
+      var css = document.createElement("style");
+      css.type = "text/css";
+      css.innerHTML = ".txt-rotate > .wrap { border-right: 0.08em solid #666 }";
+      document.body.appendChild(css);
+    };
+
+    function revealy() {
+      var reveals = document.querySelectorAll(".revealy");
+
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        var elementVisible = 150;
+
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add("active");
+        } else {
+          reveals[i].classList.remove("active");
+        }
+      }
+    }
+
+    function revealx() {
+      var reveals = document.querySelectorAll(".revealx");
+
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        var elementVisible = 150;
+
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add("active");
+        } else {
+          reveals[i].classList.remove("active");
+        }
+      }
+    }
+
+    function revealxx() {
+      var reveals = document.querySelectorAll(".revealxx");
+
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        var elementVisible = 150;
+
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add("active");
+        } else {
+          reveals[i].classList.remove("active");
+        }
+      }
+    }
+
+    function revealz() {
+      var reveals = document.querySelectorAll(".revealz");
+
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        var elementVisible = 300;
+
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add("active");
+        } else {
+          reveals[i].classList.remove("active");
+        }
+      }
+    }
+
+    function revealyy() {
+      var reveals = document.querySelectorAll(".revealyy");
+
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        var elementVisible = 150;
+
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add("active");
+        } else {
+          reveals[i].classList.remove("active");
+        }
+      }
+    }
+
+    function revealnav() {
+      var reveals = document.querySelectorAll(".revealnav");
+
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        var elementVisible = 150;
+
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add("active");
+        } else {
+          reveals[i].classList.remove("active");
+        }
+      }
+    }
+    window.addEventListener("load", revealnav);
+
+    function revealtitle() {
+      var reveals = document.querySelectorAll(".revealtitle");
+
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        var elementVisible = 150;
+
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add("active");
+        } else {
+          reveals[i].classList.remove("active");
+        }
+      }
+    }
+    window.addEventListener("load", revealtitle);
+    window.addEventListener("scroll", revealyy);
+
+    window.addEventListener("scroll", revealz);
+
+    window.addEventListener("scroll", revealy);
+    window.addEventListener("scroll", revealx);
+    window.addEventListener("scroll", revealxx);
+    //Array of images which you want to show: Use path you want.
+    var valu = 0;
+    doSlideshow();
+
+    function doSlideshow() {
+      setTimeout(() => {
+        var element = document.getElementById('top'),
+          style = window.getComputedStyle(element),
+          top = style.getPropertyValue('background-position');
+        var added = valu += 1;
+        var text = added.toString();
+        document.getElementById('top').style.backgroundPosition = `0px ${text}px, 0px ${text}px`;
+        doSlideshow();
+      }, "40")
+    }
+  </script>
+</head>
+
+<body>
+  <section class="revealtitle py-4 grid-bg active" id="top">
+    <br>
+    <br>
+    <br>
+    <h1 class="display-4 fnt-inter w-800 text-white mb-2 text-center revealtitle">Register</h1>
+    <div id="title"></div>
+    <form id="registerForm">
+      <label class="fnt-inter w-800 text-white mt-5 justify-content-center" for="username">Select Username:&nbsp;
+        &nbsp;</label>
+      <input type="text" name="username" id="username">
+      <br>
+      <label class="fnt-inter w-800 text-white mt-3 justify-content-center" for="password">Select Password:&nbsp;
+        &nbsp;&nbsp;</label>
+      <input type="password" name="password" id="password">
+      <br>
+      <label class="fnt-inter w-800 text-white mt-3 justify-content-center" for="password2">Confirm Password:</label>
+      <input type="password" name="password2" id="password2">
+      <br>
+      <input class="button btn btn-primary fnt-inter fs-6 fw-semibold btn-lg px-4 me-sm-3 mt-3" style="width: 300px;"
+        type="submit" value="Submit">
+    </form>
+    <p class="fnt-inter w-800 text-white justify-content-center mt-3" style="margin-left: 420px;">already have an
+      account? <a href="/">login</a></p>
+    <h2>&nbsp;</h2>
+    <h2>&nbsp;</h2>
+    <h2>&nbsp;</h2>
+  </section>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"></script>
+  <script>
+    // Function to add an alert
+    function addAlert(text, type) {
+      let title = document.getElementById("title");
+      let existingAlert = document.querySelector(".alert");
+
+      if (existingAlert) {
+        // If alert already exists, update its text and type
+        updateAlert(existingAlert, text, type);
+      } else {
+        // If no alert exists, create a new one
+        createAlert(title, text, type);
+      }
+    }
+
+    // Function to create a new alert
+    function createAlert(parent, text, type) {
+      let alertDiv = document.createElement("div");
+      alertDiv.innerHTML = `<div class="d-flex justify-content-center">
+    <div class="alert alert-${type}" role="alert">
+      <strong>${text}</strong>
+    </div>
+  </div>`;
+      parent.appendChild(alertDiv);
+    }
+
+    // Function to update an existing alert
+    function updateAlert(alertElement, text, type) {
+      alertElement.innerHTML = `<div class="d-flex justify-content-center">
+    <div class="alert alert-${type}" role="alert">
+      <strong>${text}</strong>
+    </div>
+  </div>`;
+    }
+
+    // Function to remove the alert
+    function removeAlert() {
+      let existingAlert = document.querySelector(".alert");
+      if (existingAlert) {
+        existingAlert.parentNode.removeChild(existingAlert);
+      }
+    }
+
+    // Uncomment the line below to test removing the alert
+    // setTimeout(removeAlert, 2000);
+  // Function to get a cookie by name
+  function getCookie(name) {
+    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
+  }
+    
+    document.addEventListener("DOMContentLoaded", function () {
+      var url = window.location.href
+      var newurl = url.replace("/register", "")
+      var socket = io.connect(newurl);
+
+      // Check if username and password cookies exist
+      var usernameCookie = getCookie('username');
+      var passwordCookie = getCookie('password');
+
+      if (usernameCookie && passwordCookie) {
+        // Cookies exist, send them to the Python code
+        socket.emit('login', {
+          username: usernameCookie,
+          password: passwordCookie
+        });
+
+        // Listen for the response
+        socket.on('login_response', function (response) {
+          if (response.status === 'success') {
+            // Redirect to /dashboard
+            window.location.href = '/dashboard';
+          } else {
+            // Login failed, remove cookies
+            document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            document.cookie = 'password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          }
+        });
+      }
+
+      document.getElementById('registerForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        // Get username, password, and type from the form
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        var password2 = document.getElementById('password2').value;
+
+        // Validate inputs
+        if (username.trim() === '' || password.trim() === '') {
+          removeAlert();
+          addAlert("Please enter both username and password to register.", "danger");
+          return;
+        }
+        // Validate inputs
+        if (password2.trim() === '') {
+          removeAlert();
+          addAlert('Please confirm your password!', "danger");
+          return;
+        }
+        if (password2.trim() !== password.trim()) {
+          removeAlert();
+          addAlert('Your confirmed password dosnt match your password!', "danger");
+          return;
+        }
+
+
+        // Send data to the Python code with the type
+        socket.emit('register', {
+          username: username,
+          password: password
+        });
+        socket.on('login_response', function (response) {
+          if (response.status === 'success') {
+            removeAlert();
+            addAlert('Register successful!', "success");
+            // Redirect or perform other actions for successful login
+			            // Set cookies for successful registration
+			// Set cookies for the entire domain
+			document.cookie = `username=${username}; path=/`;
+			document.cookie = `password=${password}; path=/`;
+
+            // Redirect to /dashboard
+            window.location.href = '/dashboard';
+          } else {
+            if (response.error === 'rate_limit') {
+              removeAlert();
+              addAlert('Too many attempts. Please try again later.', "danger");
+            } else {
+              removeAlert()
+              addAlert('Login failed. Please check your credentials.', "danger");
+            }
+          }
+
+        })
+        console.log(
+          `submited a request to ${newurl}. what was submited : { username: ${username}, password: ${password}}`
+        )
+
+
+      });
+    });
+  </script>
+
+</body>
+
+</html>
