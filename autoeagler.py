@@ -36,7 +36,7 @@ logging.info("starting Autoeagler...")
 # URLs and file locations
 latest_bungee_1_8_8 = "https://api.papermc.io/v2/projects/waterfall/versions/1.20/builds/556/downloads/waterfall-1.20-556.jar"
 bungee_location_1_8_8 = "Bungee-1.8.8/BungeeCord.jar"
-latest_eaglerx_1_8_8 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/EaglercraftX_1.8_Ultimate_u19/EaglerXBungee-Latest.jar"
+latest_eaglerx_1_8_8 = "https://github.com/lax1dude/eagl3rxbungee-memory-leak-patch/raw/main/EaglerXBungee-Memleak-Fixed.jar"
 eaglerx_location_1_8_8 = "./Bungee-1.8.8/plugins/eaglerXbungee.jar"
 latest_spigot_1_8_8 = "https://cdn.getbukkit.org/spigot/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar"
 spigot_location_1_8_8 = "Server-1.8.8/Spigot.jar"
@@ -59,6 +59,8 @@ file1_location_1_3 = "server-beta-1.3/eagler.yml"
 file2_1_3 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_Beta_1.3_Bukkit/server.properties"
 file2_location_1_3 = "server-beta-1.3/server.properties"
 
+token = ""
+
 def close_terminal_window(window_name):
     for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
         if window_name in proc.info['cmdline']:
@@ -79,6 +81,16 @@ def replace_in_file(file_path, search, replace):
     file_data = file_data.replace(search, replace)
     with open(file_path, 'w') as file:
         file.write(file_data)
+
+def set_authtoken(token):
+    with open("token", 'w') as file:
+        file.write(token)
+
+def get_authtoken():
+    global token
+    with open("token", 'r') as file:
+        file_data = file.read()
+    token = file_data
 
 def remove_everything():
     clear_screen()
@@ -185,10 +197,12 @@ def ngrok_start(server_version):
     conf.get_default().monitor_thread = False
     with redirect_stdout(None) and redirect_stderr(None):
         http_tunnel = ngrok.connect(8081, 'http', bind_tls=True)
-    logging.info(f"Server running in {ligma} at {http_tunnel.public_url.replace('https', 'wss')}")
-    print(f"Server running in {ligma} at {http_tunnel.public_url.replace('https', 'wss')}")
+    logging.info(f"Server running at {http_tunnel.public_url.replace('https', 'wss')}")
+    print(f"Server running at {http_tunnel.public_url.replace('https', 'wss')}")
 
 def main():
+    global token
+    get_authtoken()
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         print("1) Set up AutoEagler")
@@ -202,6 +216,13 @@ def main():
         if choice == '1':
             logging.info('user chose "1) Set up AutoEagler"')
             clear_screen()
+            #ask for NGROK authtoken
+            token = input("Please input your NGROK authtoken.\nRetrieve it at https://dashboard.ngrok.com/get-started/your-authtoken\n>> ")
+            conf.get_default().auth_token = token
+            set_authtoken(token)
+
+            clear_screen()
+
             #Ask for version
             version = str(input("What version of eaglercraft would you like to make your server for?\n0 -> 1.8.8(u19)\n1 -> 1.5.2\n2 -> beta 1.3\n>> "))
             logging.info(f"User chose {version}")
@@ -368,7 +389,9 @@ def main():
                 input("Press [Enter] to return to the menu (servers stay up)") 
 
         elif choice == '3':
+            clear_screen()
             logging.info('user chose "3) Run with NGROK"')
+            conf.get_default().auth_token = token
             version = str(input("What version of eaglercraft would you like to run?\nNOTE: you can only run the versions you set up!\n0 -> 1.8.8(u19)\n1 -> 1.5.2\n2 -> beta 1.3\n>> "))
             ngrok_start(version)
             if not version == "2":
@@ -385,6 +408,7 @@ def main():
 
         elif choice == '5':
             logging.info('user chose "5) Exit"')
+            conf.get_default().auth_token = token
             stop_servers()
             logging.info("exiting Autoeagler...")
             with redirect_stdout(None) and redirect_stderr(None):
