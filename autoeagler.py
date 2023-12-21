@@ -7,6 +7,7 @@ import subprocess
 import os
 import logging
 from datetime import datetime
+import json
 
 from contextlib import redirect_stdout, redirect_stderr
 from pyngrok import conf, ngrok
@@ -83,14 +84,24 @@ def replace_in_file(file_path, search, replace):
         file.write(file_data)
 
 def set_authtoken(token):
-    with open("token", 'w') as file:
-        file.write(token)
+    # Load the JSON data from the file
+    with open('config.json', 'r') as file:
+        config_data = json.load(file)
+
+    config_data['token'] = token
+
+    # Save the updated JSON data back to the file
+    with open('config.json', 'w') as file:
+        json.dump(config_data, file, indent=4)
 
 def get_authtoken():
     global token
-    with open("token", 'r') as file:
-        file_data = file.read()
-    token = file_data
+    # Load the JSON data from the file
+    with open('config.json', 'r') as file:
+        config_data = json.load(file)
+
+    # Read the value of the "token" field into a variable
+    token = config_data.get('token', None)
 
 def remove_everything():
     clear_screen()
