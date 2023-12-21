@@ -1,20 +1,81 @@
+bidict==0.22.1
+    # via python-socketio
+blinker==1.7.0
+    # via flask
 certifi==2023.11.17
     # via requests
 charset-normalizer==3.3.2
     # via requests
+click==8.1.7
+    # via flask
+colorama==0.4.6
+    # via click
+deprecated==1.2.14
+    # via limits
+flask==3.0.0
+    # via
+    #   -r requirements.in
+    #   flask-limiter
+    #   flask-socketio
+flask-limiter==3.5.0
+    # via -r requirements.in
+flask-socketio==5.3.6
+    # via -r requirements.in
+h11==0.14.0
+    # via wsproto
 idna==3.6
     # via requests
+importlib-resources==6.1.1
+    # via limits
+itsdangerous==2.1.2
+    # via flask
+jinja2==3.1.2
+    # via flask
+limits==3.7.0
+    # via flask-limiter
+markdown-it-py==3.0.0
+    # via rich
+markupsafe==2.1.3
+    # via
+    #   jinja2
+    #   werkzeug
+mdurl==0.1.2
+    # via markdown-it-py
+ordered-set==4.1.0
+    # via flask-limiter
+packaging==23.2
+    # via limits
 psutil==5.9.6
     # via -r requirements.in
 pygetwindow==0.0.9
     # via -r requirements.in
+pygments==2.17.2
+    # via rich
 pyngrok==7.0.3
     # via -r requirements.in
 pyrect==0.2.0
     # via pygetwindow
+python-engineio==4.8.0
+    # via python-socketio
+python-socketio==5.10.0
+    # via flask-socketio
 pyyaml==6.0.1
     # via pyngrok
 requests==2.31.0
     # via -r requirements.in
+rich==13.7.0
+    # via flask-limiter
+simple-websocket==1.0.0
+    # via python-engineio
+typing-extensions==4.9.0
+    # via
+    #   flask-limiter
+    #   limits
 urllib3==2.1.0
     # via requests
+werkzeug==3.0.1
+    # via flask
+wrapt==1.16.0
+    # via deprecated
+wsproto==1.2.0
+    # via simple-websocket
