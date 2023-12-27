@@ -282,16 +282,36 @@
 
     // Uncomment the line below to test removing the alert
     // setTimeout(removeAlert, 2000);
-  // Function to get a cookie by name
-  function getCookie(name) {
-    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-    if (match) return match[2];
-  }
-    
-    document.addEventListener("DOMContentLoaded", function () {
+    // Function to get a cookie by name
+    function getCookie(name) {
+      var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      if (match) return match[2];
+    }
+
+    document.addEventListener("DOMContentLoaded", async function () {
       var url = window.location.href
       var newurl = url.replace("/register", "")
       var socket = io.connect(newurl);
+
+      function checkCodespaces() {
+        return new Promise((resolve, reject) => {
+          socket.emit('whatiscodespaces');
+
+          socket.on('codespaces_response', function (response) {
+            console.log("Received codespaces response:", response);
+            console.log("to string:", JSON.stringify(response));
+
+            if (JSON.stringify(response) === '{"status":"codespacesistrue"}') {
+              console.log(`codespaces is true`);
+              resolve(true);
+            } else {
+              console.log(`codespaces is false`);
+              resolve(false);
+            }
+          });
+        });
+      }
+      checkCodespaces()
 
       // Check if username and password cookies exist
       var usernameCookie = getCookie('username');
@@ -305,10 +325,20 @@
         });
 
         // Listen for the response
-        socket.on('login_response', function (response) {
+        socket.on('login_response', async function (response) {
           if (response.status === 'success') {
-            // Redirect to /dashboard
-            window.location.href = '/dashboard';
+            const isCodespacesTrue = await checkCodespaces();
+            if (isCodespacesTrue) {
+              removeAlert()
+              addAlert(
+                'Register successful! <a href="/dashboard">Click here to redirect to the dashboard</a>',
+                "success");
+            } else {
+              removeAlert()
+              addAlert('Register successful!', "success");
+              // Redirect to /dashboard
+              window.location.href = '/dashboard';
+            }
           } else {
             // Login failed, remove cookies
             document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -349,18 +379,24 @@
           username: username,
           password: password
         });
-        socket.on('login_response', function (response) {
+        socket.on('login_response', async function (response) {
           if (response.status === 'success') {
-            removeAlert();
-            addAlert('Register successful!', "success");
-            // Redirect or perform other actions for successful login
-			            // Set cookies for successful registration
-			// Set cookies for the entire domain
-			document.cookie = `username=${username}; path=/`;
-			document.cookie = `password=${password}; path=/`;
-
-            // Redirect to /dashboard
-            window.location.href = '/dashboard';
+            const isCodespacesTrue = await checkCodespaces();
+            if (isCodespacesTrue) {
+                document.cookie = `username=${username}`;
+                document.cookie = `password=${password}`;
+                removeAlert()
+                addAlert(
+                  'Register successful! <a href="/dashboard">Click here to redirect to the dashboard</a>',
+                  "success");
+              } else {
+                removeAlert()
+                addAlert('Register successful!', "success");
+                document.cookie = `username=${username}; path=/`;
+                document.cookie = `password=${password}; path=/`;
+                // Redirect to /dashboard
+                window.location.href = '/dashboard';
+              }
           } else {
             if (response.error === 'rate_limit') {
               removeAlert();
