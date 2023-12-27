@@ -17,6 +17,19 @@ limiter = Limiter(
 
 app.static_folder = 'web/static'
 
+def check_codespaces():
+    # Read config.json
+    with open('config.json', 'r') as config_file:
+        config_data = json.load(config_file)
+
+    # Check if codespaces is true
+    if config_data.get('codespaces'):
+        print("codespaces is true")
+        socketio.emit('codespaces_response', {'status': 'codespacesistrue'})
+    else:
+        print("codespaces is false")
+        socketio.emit('codespaces_response', {'status': 'codespacesisfalse'})
+
 
 @app.route('/')
 def index():
@@ -29,6 +42,12 @@ def register():
 @app.route('/dashboard/')
 def dashboard():
     return render_template('dashboard/index.html')
+
+@socketio.on('whatiscodespaces')
+def what_is_codespaces():
+    # Check codespaces status and send the response to the client
+    check_codespaces()
+    return "Codespaces check initiated."
 
 @socketio.on('login')
 def handle_login(data):
