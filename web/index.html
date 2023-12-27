@@ -275,12 +275,34 @@
         existingAlert.parentNode.removeChild(existingAlert);
       }
     }
+
     function getCookie(name) {
       var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
       if (match) return match[2];
     }
-    document.addEventListener("DOMContentLoaded", function () {
+
+    document.addEventListener("DOMContentLoaded", async function () {
       var socket = io.connect(window.location.href);
+
+      function checkCodespaces() {
+        return new Promise((resolve, reject) => {
+          socket.emit('whatiscodespaces');
+
+          socket.on('codespaces_response', function (response) {
+            console.log("Received codespaces response:", response);
+            console.log("to string:", JSON.stringify(response));
+
+            if (JSON.stringify(response) === '{"status":"codespacesistrue"}') {
+              console.log(`codespaces is true`);
+              resolve(true);
+            } else {
+              console.log(`codespaces is false`);
+              resolve(false);
+            }
+          });
+        });
+      }
+      checkCodespaces()
       // Check if username and password cookies exist
       var usernameCookie = getCookie('username');
       var passwordCookie = getCookie('password');
@@ -292,10 +314,21 @@
         });
 
         // Listen for the response
-        socket.on('login_response', function (response) {
+        socket.on('login_response', async function (response) {
           if (response.status === 'success') {
-            // Redirect to /dashboard
-            window.location.href = '/dashboard';
+            // Check if codespaces is true or false
+            const isCodespacesTrue = await checkCodespaces();
+            if (isCodespacesTrue) {
+              removeAlert()
+              addAlert(
+                'Login successful! <a href="/dashboard">Click here to redirect to the dashboard</a>',
+                "success");
+            } else {
+              removeAlert()
+              addAlert('Login successful!', "success");
+              // Redirect to /dashboard
+              window.location.href = '/dashboard';
+            }
           } else {
             // Login failed, remove cookies
             document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -326,17 +359,25 @@
           });
 
           // Listen for the response
-          socket.on('login_response', function (response) {
+          socket.on('login_response', async function (response) {
             if (response.status === 'success') {
-              removeAlert()
-              addAlert('Login successful!', "success");
-              // Redirect or perform other actions for successful login
-              // Set cookies for successful registration
-              document.cookie = `username=${username}`;
-              document.cookie = `password=${password}`;
-
-              // Redirect to /dashboard
-              window.location.href = '/dashboard';
+              // Check if codespaces is true or false
+              const isCodespacesTrue = await checkCodespaces();
+              if (isCodespacesTrue) {
+                document.cookie = `username=${username}`;
+                document.cookie = `password=${password}`;
+                removeAlert()
+                addAlert(
+                  'Login successful! <a href="/dashboard">Click here to redirect to the dashboard</a>',
+                  "success");
+              } else {
+                removeAlert()
+                addAlert('Login successful!', "success");
+                document.cookie = `username=${username}`;
+                document.cookie = `password=${password}`;
+                // Redirect to /dashboard
+                window.location.href = '/dashboard';
+              }
             } else {
               if (response.error === 'rate_limit') {
                 removeAlert();
