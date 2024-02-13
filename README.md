@@ -10,7 +10,7 @@ A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alt
 
 ✅ Multiple versions (1.3_beta + 1.5.2 + 1.8.8)
 
-🟠 Linux support
+❌ Linux support
 
 ## Usage:
 
