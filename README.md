@@ -1,5 +1,5 @@
 # AutoEagler
-A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alternative to singleplayer for Eaglercraft
+A tool to automatically set up a localhost eaglerXbungee, aiming to provide an alternative to Eaglercraft's singleplayer
 
 ## Progress:
 ✅ Local + NGROK tunneling
@@ -10,11 +10,9 @@ A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alt
 
 ✅ Multiple versions (1.3_beta + 1.5.2 + 1.8.8)
 
-🟠 Linux support
+🟠 Docker deploy
 
-## Usage:
-
-### Installation
+### Installation (manual)
 
 1. Download and install the latest [Python](https://python.org) release
 3. Install [Java 8](https://java.com/download/)
@@ -24,6 +22,18 @@ A tool to automaticly set up a localhost eaglerXbungee, aiming to provide an alt
 6. Open up option `1`
 7. Let it run for a while, it might pop up some windows, you're done when the main menu is back
 8. Done!
+
+### Installation (docker)
+
+1. Install [docker](https://www.docker.com/get-started/)
+2. Run this command
+```
+docker run wxnnvs/autoeagler
+```
+3. Add a new server on your Eaglercraft client
+4. Put in the given address (wss://<randomnumbers>.ngrok.io)
+
+## Usage:
 
 ### Local server
 
