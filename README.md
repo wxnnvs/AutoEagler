@@ -10,7 +10,7 @@ A tool to automatically set up a localhost eaglerXbungee, aiming to provide an a
 
 ✅ Multiple versions (1.3_beta + 1.5.2 + 1.8.8)
 
-❌ Docker deploy
+🟠 Docker deploy
 
 ### Installation (manual)
 
