@@ -177,6 +177,35 @@ async function spawn(sub: 'spigot' | 'bungee') {
   await $`mkdir -p ${sub}`.quiet()
   await $`echo "eula=true" > ${sub}/eula.txt`.quiet()
 
+ //change online-mode=true to false in server.properties
+  if(sub === 'spigot'){
+    await $`echo "online-mode=false" > ${sub}/server.properties`.quiet()
+  }
+  //change bungeecord to true in spigot.yml
+  if(sub === 'spigot'){
+    await $`echo "bungeecord: true" > ${sub}/spigot.yml`.quiet()
+  }
+  //set online_mode: true to false in config.yml
+  if(sub === 'bungee'){
+    await $`echo "online_mode: false" > ${sub}/config.yml`.quiet()
+  }
+  //set ip_forward: true to false in config.yml
+  if(sub === 'bungee'){
+    await $`echo "ip_forward: false" > ${sub}/config.yml`.quiet()
+  }
+  //set enable_authentication_system: true to false in plugins/EaglercraftXBungee/authservice.yml
+  if(sub === 'bungee'){
+    await $`echo "enable_authentication_system: false" > ${sub}/plugins/EaglercraftXBungee/authservice.yml`.quiet()
+  }
+  //set server_name: 'AutoEagler Server' in plugins/EaglercraftXBungee/settings.yml
+  if(sub === 'bungee'){
+    await $`echo "server_name: 'AutoEagler Server'" > ${sub}/plugins/EaglercraftXBungee/settings.yml`.quiet()
+  }
+  //set &6An EaglercraftX server to &6An AutoEagler Server in plugins/EaglercraftXBungee/listeners.yml
+  if(sub === 'bungee'){
+    await $`echo "&6An AutoEagler Server" > ${sub}/plugins/EaglercraftXBungee/listeners.yml`.quiet()
+  }
+
   // Generate a unique filename for the jar
   const jar = sub + '-' + Bun.hash(url).toString(36) + '.jar'
   // Download the jar if it's not already downloaded
