@@ -221,6 +221,7 @@ def main():
         print("3) Run with NGROK")
         print("4) Wipe everything")
         print("5) Exit")
+        print("6) start web dashboard (soon)")
 
         choice = input(">> ")
 

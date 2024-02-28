@@ -1,0 +1,6 @@
+*
+!index.html
+!package.json
+!server.ts
+!tsconfig.json
+!yarn.lock

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html class="" lang="en">
+  <head>
+    <title>AutoEagler Webserver</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <style>
+      html {
+        background: black;
+        color: white;
+        transition: all 0.5s;
+        font-family: 'Audiowide', sans-serif;
+      }
+      body {
+        margin: 0;
+        background: inherit;
+      }
+      .ws-connected header {
+        background: #020;
+      }
+      .spigot-started .process--spigot {
+        background: #020;
+      }
+      .bungee-started .process--bungee {
+        background: #020;
+      }
+      .if-spigot-started,
+      .if-spigot-stopped,
+      .if-bungee-started,
+      .if-bungee-started {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+      .spigot-init .if-spigot-init,
+      .spigot-init .if-spigot-stopped,
+      .spigot-stopped .if-spigot-stopped,
+      .spigot-started .if-spigot-started,
+      .bungee-stopped .if-bungee-stopped,
+      .bungee-started .if-bungee-started {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .bungee-started .if-not-bungee-started {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      pre {
+        max-width: 100%;
+        white-space: pre-line;
+        font-size: 12px;
+        opacity: 0.8;
+        flex-basis: 0;
+      }
+      pre:hover {
+        opacity: 1;
+      }
+      dselect,
+      dbutton {
+        text-align: center;
+        cursor: pointer;
+        color: #fff;
+        background-color: #222;
+        border: none;
+        border-bottom: 4px solid #444;
+        font-size: inherit;
+        font-family: inherit;
+        text-decoration: none;
+        transition-duration: 0.3s;
+      }
+      .cmd {
+        position: sticky;
+        display: flex;
+        gap: 10px;
+        bottom: 0;
+        background: inherit;
+        padding: 20px;
+      }
+      .cmd input {
+        box-sizing: border-box;
+        flex: 1;
+        padding: 8px 1em;
+        border-radius: 99px;
+        font: inherit;
+        font-size: 18px;
+        line-height: 24px;
+        border: none;
+        min-width: 40px;
+        width: 40px;
+        flex-basis: 40px;
+        background: #ffffff22;
+        color: #fff;
+        outline: none;
+        transition-duration: 0.3s;
+      }
+      .cmd input::placeholder {
+        color: #ffffff66;
+      }
+      .cmd button {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        top: 22px;
+        right: 22px;
+        border-radius: 99px;
+        font: inherit;
+        font-weight: bold;
+        background: #000;
+        padding: 0;
+        border: none;
+        color: inherit;
+      }
+      .log-outer {
+        flex: 1;
+        overflow: auto;
+        font-size: 12px;
+        padding: 20px;
+      }
+      .processes {
+        display: flex;
+        margin-top: 2px;
+        gap: 2px;
+        width: 100vw;
+      }
+      .process {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 62px);
+        box-sizing: border-box;
+        flex: 1 1 0;
+        padding-top: 10px;
+        box-sizing: border-box;
+      }
+      .controls {
+        padding: 0 20px;
+        margin-bottom: 10px;
+        background: inherit;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header
+      style="
+        font-size: min(30px, 5vw);
+        text-align: center;
+        line-height: 60px;
+        margin: 0;
+        color: #ffffff33;
+      "
+    >
+      AutoEagler Webserver
+    </header>
+    <div class="processes">
+      <div class="process process--spigot">
+        <div class="controls">
+          Spigot
+          <select
+            name="spigotURL"
+            id="spigotURL"
+            class="if-spigot-stopped"
+            onchange="set({spigotURL:event.target.value})"
+            style="width: 100px"
+          >
+            <option value="" selected>Choose spigot version...</option>
+            <option
+              value="https://cdn.getbukkit.org/spigot/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar"
+            >
+              1.8.8 R0.1
+            </option>
+            <option
+              value="https://cdn.getbukkit.org/spigot/spigot-1.5.2-R1.1-SNAPSHOT.jar"
+            >
+              1.5.2 R1.1
+            </option>
+            <option
+              value="https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_Beta_1.3_Bukkit/eaglercraft-bukkit.jar"
+            >
+              Eaglercraft Beta 1.3 Bukkit
+            </option>
+          </select>
+          <button
+            type="button"
+            class="if-spigot-stopped"
+            onclick="cmd('spigot','start')"
+          >
+            start
+          </button>
+          <button
+            type="button"
+            class="if-spigot-started"
+            onclick="cmd('spigot','stop')"
+          >
+            stop
+          </button>
+          <button
+            type="button"
+            class="if-spigot-started"
+            onclick="cmd('spigot','stats')"
+          >
+            stats
+          </button>
+          <button
+            type="button"
+            class="if-spigot-started"
+            onclick="cmd('spigot','help')"
+          >
+            help
+          </button>
+          <button type="button" onclick="set({spigotLog:''})">clear log</button>
+        </div>
+        <div class="log-outer">
+          <pre id="spigotLogPre"></pre>
+          <div id="bottom"></div>
+        </div>
+        <form class="cmd" onsubmit="submitt(event,'spigot')">
+          <input type="text" autofocus placeholder="Spigot command" />
+          <button type="submit">&rarr;</button>
+        </form>
+      </div>
+      <div class="process process--bungee">
+        <div class="controls">
+          Bungee
+          <button
+            type="button"
+            class="if-bungee-stopped"
+            onclick="cmd('bungee','start')"
+          >
+            start
+          </button>
+          <button
+            type="button"
+            class="if-bungee-started"
+            onclick="cmd('bungee','stop')"
+          >
+            stop
+          </button>
+        </div>
+        <div class="log-outer">
+          <pre id="bungeeLogPre"></pre>
+          <pre id="cls"></pre>
+        </div>
+        <form class="cmd" onsubmit="submitt(event,'bungee')">
+          <input type="text" autofocus placeholder="Bungee command" />
+          <button type="submit">&rarr;</button>
+        </form>
+      </div>
+    </div>
+    <script defer async>
+      let client = 'init'
+      let server = {
+        spigotStatus: 'init',
+        spigotLog: '',
+        spigotURL: '',
+        bungeeStatus: 'init',
+        bungeeLog: '',
+        bungeeURL: '',
+      }
+      connectWebSocket()
+
+      function submitt(event, sub) {
+        event.preventDefault()
+        const input = event.target.querySelector('input')
+        cmd(sub, input.value)
+        input.value = ''
+      }
+
+      // arrow up should load last command
+      let commandIndex = 0
+      document
+        .querySelector('.cmd input')
+        .addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowUp') {
+            const commands = server.spigotLog
+              .split('\n')
+              .filter((line) => line.startsWith('>'))
+              .filter((value, index, self) => self.indexOf(value) === index)
+            commandIndex++
+            const lastCommand = commands[commands.length - commandIndex]
+            if (lastCommand) {
+              document.querySelector('.cmd input').value = lastCommand.slice(2)
+            }
+          }
+        })
+
+      /** Update server state */
+      async function set(updates) {
+        Object.assign(server, updates)
+        render()
+
+        const data = await fetch('/api/set', {
+          method: 'POST',
+          body: JSON.stringify(updates),
+        }).then((res) => res.json())
+      }
+
+      /** Send command to a subprocess */
+      async function cmd(sub, cmd, msg) {
+        if (cmd === 'reset' && !confirm('Restart server and loose all config?'))
+          return
+        log(sub, '> ' + cmd)
+        const data = await fetch('/api/?' + new URLSearchParams({ cmd, sub }), {
+          method: 'POST',
+        }).then((res) => res.json())
+      }
+
+      function log(sub, message) {
+        if (!sub || !message) return
+        if (sub === 'spigot') spigotLogPre.innerText += message + '\n'
+        else if (sub === 'bungee') bungeeLogPre.innerText += message + '\n'
+      }
+
+      function connectWebSocket() {
+        const ws = new WebSocket(location.origin.replace('http', 'ws'))
+
+        ws.addEventListener('open', () => {
+          status = 'connected'
+          render()
+          log('WebSocket connected')
+        })
+
+        ws.addEventListener('message', (evt) => {
+          if (evt.data.startsWith('{')) {
+            Object.assign(server, JSON.parse(evt.data))
+            render()
+          } else log(evt.data)
+          bottom.scrollIntoView({ behavior: 'smooth' })
+        })
+
+        ws.addEventListener('close', () => {
+          status = 'disconnected'
+          render()
+          log('WebSocket connection closed')
+          setTimeout(connectWebSocket, 2000)
+        })
+
+        ws.addEventListener('error', (error) => {
+          status = 'error'
+          render()
+          error('WebSocket error:', error.message)
+        })
+      }
+
+      function render() {
+        const className =
+          'ws-' +
+          status +
+          ' spigot-' +
+          server.spigotStatus +
+          ' bungee-' +
+          server.bungeeStatus
+        document.documentElement.className = className
+        // cls.innerText = Object.entries(server)
+        //   .filter(([key]) => !key.endsWith('Log'))
+        //   .map(
+        //     ([key, value]) =>
+        //       key + ': ' + (Array.isArray(value) ? value.join(' ') : value)
+        //   )
+        //   .join('\n')
+        spigotLogPre.innerText = server.spigotLog
+        spigotURL.value = server.spigotURL
+        bungeeLogPre.innerText = server.bungeeLog
+      }
+    </script>
+  </body>
+</html>

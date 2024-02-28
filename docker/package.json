@@ -1,0 +1,14 @@
+{
+  "name": "autoeagler-webserver",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "bun --watch server.ts",
+    "docker": "docker buildx build . -t thgh/autoeagler-webserver --platform=linux/amd64,linux/arm64/v8 --push",
+    "drun": "docker run --rm -it -e PORT=24025 -p 24025:24025 thgh/autoeagler-webserver"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/bun": "^1.0.5"
+  }
+}
