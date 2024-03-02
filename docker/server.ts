@@ -1,4 +1,6 @@
 import { $, type ServerWebSocket, type Subprocess } from 'bun'
+import fs from 'fs';
+import util from 'util';
 
 /** These sockets will receive any changes to the server state */
 const sockets = new Set<ServerWebSocket<unknown>>()
@@ -6,6 +8,19 @@ const sockets = new Set<ServerWebSocket<unknown>>()
 const PORT = parseInt(process.env['PORT']!) || 6543
 /** Public URL for webserver, if proxied through Docker for example */
 const PUBLIC_URL = process.env['PUBLIC_URL'] || 'http://localhost:' + PORT
+
+/** Read and write file */
+const readFile = util.promisify(fs.readFile);
+const writeFile = util.promisify(fs.writeFile);
+
+/** overwrite config */
+async function overwriteConfig(file_path: string, target: string, replacement: string) {
+  const data = await readFile(file_path, 'utf-8');
+  const lines = data.split('\n');
+  const updatedLines = lines.map(line => line.trim() === target ? replacement : line);
+  const updatedData = updatedLines.join('\n');
+  await writeFile(file_path, updatedData, 'utf-8');
+}
 
 Bun.serve({
   port: PORT,
@@ -178,16 +193,24 @@ async function spawn(sub: 'spigot' | 'bungee') {
 
   if (sub === 'spigot') {
     await $`echo "eula=true" > ${sub}/eula.txt`.quiet()
-    await $`echo "online-mode=false" > ${sub}/server.properties`.quiet()
-    await $`echo "bungeecord: true" > ${sub}/spigot.yml`.quiet()
+    await overwriteConfig(`${sub}/server.properties`, "online-mode=true", "online-mode=false");
+    await overwriteConfig(`${sub}/spigot.yml`,  "bungeecord: false", "bungeecord: true");
   }
 
   if (sub === 'bungee') {
+<<<<<<< Updated upstream
     await $`echo "online_mode: false" > ${sub}/config.yml`.quiet()
     await $`echo "ip_forward: false" > ${sub}/config.yml`.quiet()
     await $`echo "enable_authentication_system: false" > ${sub}/plugins/EaglercraftXBungee/authservice.yml`.quiet()
     await $`echo "server_name: 'AutoEagler Server'" > ${sub}/plugins/EaglercraftXBungee/settings.yml`.quiet()
     await $`echo "&6An AutoEagler Server" > ${sub}/plugins/EaglercraftXBungee/listeners.yml`.quiet()
+=======
+    await overwriteConfig(`${sub}/config.yml`, "online_mode: true", "online_mode: false");
+    await overwriteConfig(`${sub}/config.yml`, "ip_forward: false", "ip_forward: true");
+    await overwriteConfig(`${sub}/plugins/EaglercraftXBungee/authservice.yml`, "enable_authentication_system: true", "enable_authentication_system: false");
+    await overwriteConfig(`${sub}/plugins/EaglercraftXBungee/settings.yml`, "server_name: 'EaglercraftXBungee Server'", "server_name: 'AutoEagler Server'");
+    await overwriteConfig(`${sub}/plugins/EaglercraftXBungee/listeners.yml`, "&6An EaglercraftX server", "&6An AutoEagler server");
+>>>>>>> Stashed changes
   }
 
   // Generate a unique filename for the jar
