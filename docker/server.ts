@@ -198,19 +198,11 @@ async function spawn(sub: 'spigot' | 'bungee') {
   }
 
   if (sub === 'bungee') {
-<<<<<<< Updated upstream
-    await $`echo "online_mode: false" > ${sub}/config.yml`.quiet()
-    await $`echo "ip_forward: false" > ${sub}/config.yml`.quiet()
-    await $`echo "enable_authentication_system: false" > ${sub}/plugins/EaglercraftXBungee/authservice.yml`.quiet()
-    await $`echo "server_name: 'AutoEagler Server'" > ${sub}/plugins/EaglercraftXBungee/settings.yml`.quiet()
-    await $`echo "&6An AutoEagler Server" > ${sub}/plugins/EaglercraftXBungee/listeners.yml`.quiet()
-=======
     await overwriteConfig(`${sub}/config.yml`, "online_mode: true", "online_mode: false");
     await overwriteConfig(`${sub}/config.yml`, "ip_forward: false", "ip_forward: true");
     await overwriteConfig(`${sub}/plugins/EaglercraftXBungee/authservice.yml`, "enable_authentication_system: true", "enable_authentication_system: false");
     await overwriteConfig(`${sub}/plugins/EaglercraftXBungee/settings.yml`, "server_name: 'EaglercraftXBungee Server'", "server_name: 'AutoEagler Server'");
     await overwriteConfig(`${sub}/plugins/EaglercraftXBungee/listeners.yml`, "&6An EaglercraftX server", "&6An AutoEagler server");
->>>>>>> Stashed changes
   }
 
   // Generate a unique filename for the jar
