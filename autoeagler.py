@@ -53,11 +53,12 @@ file3_1_5_2 = "https://git.eaglercraft.rip/eaglercraft/eaglercraft-builds/raw/br
 file3_location_1_5_2 = "Bungee-1.5.2/server-icon.png"
 latest_spigot_1_5_2 = "https://cdn.getbukkit.org/spigot/spigot-1.5.2-R1.1-SNAPSHOT.jar"
 spigot_location_1_5_2 = "server-1.5.2/Spigot.jar"
-latest_bukkit_1_3 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_Beta_1.3_Bukkit/eaglercraft-bukkit.jar"
+#1.3 beta
+latest_bukkit_1_3 = "https://git.eaglercraft.rip/eaglercraft/eaglercraft-builds/raw/branch/main/Eaglercraft_b1.3_Bukkit/eaglercraft-bukkit.jar"
 bukkit_location_1_3 = "server-beta-1.3/eaglercraft-bukkit.jar"
-file1_1_3 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_Beta_1.3_Bukkit/eagler.yml"
+file1_1_3 = "https://git.eaglercraft.rip/eaglercraft/eaglercraft-builds/raw/branch/main/Eaglercraft_b1.3_Bukkit/eagler.yml"
 file1_location_1_3 = "server-beta-1.3/eagler.yml"
-file2_1_3 = "https://git.eaglercraft.online/eaglercraft/eaglercraft-builds/raw/branch/main/java/Eaglercraft_Beta_1.3_Bukkit/server.properties"
+file2_1_3 = "https://git.eaglercraft.rip/eaglercraft/eaglercraft-builds/raw/branch/main/Eaglercraft_b1.3_Bukkit/server.properties"
 file2_location_1_3 = "server-beta-1.3/server.properties"
 
 token = ""
