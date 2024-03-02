@@ -173,9 +173,22 @@ async function spawn(sub: 'spigot' | 'bungee') {
 
   state[`${sub}Status`] = 'starting'
 
-  // Prepare folder and accept eula
+  // Prepare folder and change config files
   await $`mkdir -p ${sub}`.quiet()
-  await $`echo "eula=true" > ${sub}/eula.txt`.quiet()
+
+  if (sub === 'spigot') {
+    await $`echo "eula=true" > ${sub}/eula.txt`.quiet()
+    await $`echo "online-mode=false" > ${sub}/server.properties`.quiet()
+    await $`echo "bungeecord: true" > ${sub}/spigot.yml`.quiet()
+  }
+
+  if (sub === 'bungee') {
+    await $`echo "online_mode: false" > ${sub}/config.yml`.quiet()
+    await $`echo "ip_forward: true" > ${sub}/config.yml`.quiet()
+    await $`echo "enable_authentication_system: false" > ${sub}/plugins/EaglercraftXBungee/authservice.yml`.quiet()
+    await $`echo "server_name: 'AutoEagler Server'" > ${sub}/plugins/EaglercraftXBungee/settings.yml`.quiet()
+    await $`echo "&6An AutoEagler Server" > ${sub}/plugins/EaglercraftXBungee/listeners.yml`.quiet()
+  }
 
   // Generate a unique filename for the jar
   const jar = sub + '-' + Bun.hash(url).toString(36) + '.jar'
