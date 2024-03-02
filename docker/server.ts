@@ -184,7 +184,7 @@ async function spawn(sub: 'spigot' | 'bungee') {
 
   if (sub === 'bungee') {
     await $`echo "online_mode: false" > ${sub}/config.yml`.quiet()
-    await $`echo "ip_forward: false" > ${sub}/config.yml`.quiet()
+    await $`echo "ip_forward: true" > ${sub}/config.yml`.quiet()
     await $`echo "enable_authentication_system: false" > ${sub}/plugins/EaglercraftXBungee/authservice.yml`.quiet()
     await $`echo "server_name: 'AutoEagler Server'" > ${sub}/plugins/EaglercraftXBungee/settings.yml`.quiet()
     await $`echo "&6An AutoEagler Server" > ${sub}/plugins/EaglercraftXBungee/listeners.yml`.quiet()
