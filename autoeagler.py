@@ -29,7 +29,7 @@ logging.basicConfig(
         logging.FileHandler(log_file_path),
     ]
 )
-logging.info("Autoeagler v2.3 logs")
+logging.info("Autoeagler v2.3.3 logs")
 logging.info("starting Autoeagler...")
 
 
