@@ -29,7 +29,7 @@ logging.basicConfig(
         logging.FileHandler(log_file_path),
     ]
 )
-logging.info("Autoeagler v2.3.3 logs")
+logging.info("Autoeagler v2.3.4 logs")
 logging.info("starting Autoeagler...")
 
 
@@ -37,7 +37,7 @@ logging.info("starting Autoeagler...")
 # URLs and file locations
 latest_bungee_1_8_8 = "https://api.papermc.io/v2/projects/waterfall/versions/1.20/builds/556/downloads/waterfall-1.20-556.jar"
 bungee_location_1_8_8 = "Bungee-1.8.8/BungeeCord.jar"
-latest_eaglerx_1_8_8 = "https://github.com/lax1dude/eagl3rxbungee-memory-leak-patch/raw/main/EaglerXBungee-Memleak-Fixed.jar"
+latest_eaglerx_1_8_8 = "https://git.eaglercraft.rip/eaglercraft/eaglercraft-1.8/raw/branch/main/gateway/EaglercraftXBungee/EaglerXBungee-Latest.jar"
 eaglerx_location_1_8_8 = "./Bungee-1.8.8/plugins/eaglerXbungee.jar"
 latest_spigot_1_8_8 = "https://cdn.getbukkit.org/spigot/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar"
 spigot_location_1_8_8 = "Server-1.8.8/Spigot.jar"
