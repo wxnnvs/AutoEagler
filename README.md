@@ -1,9 +1,7 @@
-[ARCHIVED] - Websites dissapeared making the installer useless.
-
+# [ARCHIVED]
+Websites dissapeared making the installer useless.
 Singleplayer is released on 1.8.8 making the idea useless. 
-
 I officially declare this project as dead.
-
 Feel free to use the code for your own project.
 
 # AutoEagler
