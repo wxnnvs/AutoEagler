@@ -1,3 +1,6 @@
+[ARCHIVED] - Websites dissapeared and singleplayer is released on 1.8.8. I officially declare this project as dead.
+Feel free to use the code for your own project.
+
 # AutoEagler
 A tool to automatically set up a localhost eaglerXbungee, aiming to provide an alternative to Eaglercraft's singleplayer
 
